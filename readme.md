@@ -22,3 +22,9 @@ So th config file should look somehting like this:
 NODE_ENV=
 PORT=
 ```
+
+```
+node scripts/test-01.js
+
+node scripts/test-02.js
+```
