@@ -20,6 +20,7 @@
     "koa-logger": "^3.2.1",
     "net": "^1.0.2",
     "node-fetch": "^2.6.1",
-    "receiptline": "^1.5.3"
+    "receiptline": "^1.5.3",
+    "serialport": "^9.2.1"
   }
 }

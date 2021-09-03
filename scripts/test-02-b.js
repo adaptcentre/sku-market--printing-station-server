@@ -1,12 +1,19 @@
 import receiptline from 'receiptline'
 import net from 'net'
 import fs from 'fs'
+import serialport from 'serialport'
 
 const host = '127.0.0.1'
 const port = 19100
+const device = 'COM9'
+
+/* 
+to get name of device open terminal an type:
+ls /dev/tty.usb* o rls /dec/tty.*
+*/
+
 const options = {
   cpl: 48,
-  asImage: false,
   encoding: 'cp858',
   gradient: false,
   gamma: 1.8,
@@ -25,11 +32,46 @@ start().then(() => {
 })
 
 async function start() {
+
+  await createPrintServer()
+
   const text = await getText()
-  
+
   const response = await print(text)
 
   console.log(`Status ${response.status}`)
+}
+
+function createPrintServer() {
+  const serial = net.createServer(conn => {
+
+    const port = new serialport(device, { autoOpen: false })
+
+    port.on('error', err => {
+      console.log('--- --- ---')
+      console.log(err)
+      conn.destroy()
+    })
+
+    port.on('open', () => {
+      conn.pipe(port).pipe(conn)
+      conn.on('end', () => port.unpipe(conn))
+      conn.on('close', had_error => port.drain(err => port.close()))
+    })
+    
+    port.open()
+  })
+
+  serial.maxConnections = 1;
+
+  let p = new Promise((resolve) => {
+    serial.listen(port, () => {
+      console.log(`Serial-LAN converter running at ${host}:${port}`)
+      resolve()
+    });
+  })
+
+  return p
 }
 
 function print(text) {
@@ -40,14 +82,8 @@ function print(text) {
     const sock = net.connect(port, host)
 
     sock.on('connect', () => {
-      // convert(svg).then(png => {
-      //   const image = `|{i:${png.toString('base64')}}`
-
-      //   drain = sock.write(receiptline.transform(image, options), 'binary')
-      // })
-
       const command = receiptline.transform(text, options);
-
+      
       drain = sock.write(command, /^<svg/.test(command) ? 'utf8' : 'binary');
     })
 
@@ -77,5 +113,5 @@ function print(text) {
 }
 
 function getText() {
-  return fs.readFileSync('./scripts/test-02.txt', 'utf8')
+  return fs.readFileSync('./scripts/test.txt', 'utf8')
 }

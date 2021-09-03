@@ -23,8 +23,14 @@ NODE_ENV=
 PORT=
 ```
 
+Virtual Printer Tests
 ```
-node scripts/test-01.js
+node scripts/test-01-a.js
+node scripts/test-01-b.js
+```
 
-node scripts/test-02.js
+Serial Port Printer Tests
+```
+node scripts/test-02-a.js
+node scripts/test-02-b.js
 ```
