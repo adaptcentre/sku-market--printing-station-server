@@ -18,9 +18,7 @@
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-logger": "^3.2.1",
-    "net": "^1.0.2",
     "node-fetch": "^2.6.1",
-    "receiptline": "^1.5.3",
-    "serialport": "^9.2.1"
+    "printer": "^0.4.0"
   }
 }

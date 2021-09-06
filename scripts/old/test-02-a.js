@@ -8,11 +8,13 @@ const convert = ConvertSvgToPng.convert
 
 const host = '127.0.0.1'
 const port = 19100
-const device = 'COM10'
+const device = 'usb://Star/TSP143%20(STR_T-001)?location=14200000'
 
 /* 
 to get name of device open terminal an type:
 ls /dev/tty.usb* o rls /dec/tty.*
+
+Star_TSP143__STR_T_001_
 */
 
 const options = {
