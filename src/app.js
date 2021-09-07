@@ -23,13 +23,13 @@ router.get('/', async (ctx, next) => {
 router.post('/api/print', async (ctx, next) => {
   const id = ctx.request.body.id
 
-  //const id = '44d1366c-92f1-4071-b4af-b24a3ca1e0e9'
-
   if (!id) {
     ctx.throw(400)
   }
 
-  let response = await fetch('http://localhost:4000/api/receipt', {
+  const api_url = process.env.API_URL || 4000
+
+  let response = await fetch(`${api_url}/api/receipt`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -42,12 +42,9 @@ router.post('/api/print', async (ctx, next) => {
     ctx.throw(400)
   }
 
-  // not sure if this should be awaited and status sent to client
-  printService.print(response.svg).then( (res) => {
-    console.log(`printService print() completed - ${res.status}`)
-  })
+  const printStatus = await printService.print(response.svg)
 
-  ctx.body = { success: true }
+  ctx.body = { success: printStatus.success }
 })
 
 
