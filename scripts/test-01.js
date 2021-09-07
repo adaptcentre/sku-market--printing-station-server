@@ -37,7 +37,7 @@ function print(data) {
 			data: data,
 			type: 'JPEG',
 			success: (id) => {
-				console.log(`sent to printer with jobid: ${id}`)
+				console.log(`Sent to printer with job id: ${id}`)
 				resolve()
 			},
 			error: (err) => {
