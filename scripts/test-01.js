@@ -1,4 +1,5 @@
-import printer from  'printer'
+//import printer from  'printer'
+import printer from '@thiagoelg/node-printer'
 import fs from 'fs'
 import ConvertSvgToPng from 'convert-svg-to-png'
 
@@ -11,6 +12,15 @@ start().then(() => {
 })
 
 async function start() {
+
+	const name = printer.getDefaultPrinterName()
+
+	if(!name) {
+		throw 'No Default printer'
+	} else {
+		console.log('Default printer --> ', name)
+	}
+
 	const svg = await getSvg()
 	const png = await convert(svg)
 
@@ -20,7 +30,6 @@ async function start() {
 function getSvg() {
   return fs.readFileSync('./scripts/test.svg', 'utf8')
 }
-
 
 function print(data) {
 	let p = new Promise( (resolve) => {

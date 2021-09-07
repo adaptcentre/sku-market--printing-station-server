@@ -13,12 +13,12 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.0.0",
+    "@thiagoelg/node-printer": "^0.5.5",
     "convert-svg-to-png": "^0.5.0",
     "dotenv": "^10.0.0",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-logger": "^3.2.1",
-    "node-fetch": "^2.6.1",
-    "printer": "^0.4.0"
+    "node-fetch": "^2.6.1"
   }
 }
