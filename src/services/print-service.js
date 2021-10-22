@@ -17,6 +17,7 @@ class PrintService {
     const jpeg = await convertToJpeg(svg)
     
     //fs.writeFileSync('test.jpeg', jpeg)
+    //fs.writeFileSync('test.jpeg', jpeg)
 
     let p = new Promise( (resolve) => {
       printer.printDirect({
