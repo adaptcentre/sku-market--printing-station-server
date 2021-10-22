@@ -1,9 +1,7 @@
 //import printer from  'printer'
 import printer from '@thiagoelg/node-printer'
 import fs from 'fs'
-import ConvertSvgToPng from 'convert-svg-to-png'
-
-const convert = ConvertSvgToPng.convert
+import svg2img from 'svg2img'
 
 console.log('Starting 🚀🚀🚀')
 
@@ -22,29 +20,36 @@ async function start() {
 	}
 
 	const svg = await getSvg()
-	const png = await convert(svg)
-
-	await print(png)
+	
+	await print(svg)
 }
 
 function getSvg() {
   return fs.readFileSync('./scripts/test.svg', 'utf8')
 }
 
-function print(data) {
+function print(svg) {
 	let p = new Promise( (resolve) => {
-		printer.printDirect({
-			data: data,
-			type: 'JPEG',
-			success: (id) => {
-				console.log(`Sent to printer with job id: ${id}`)
-				resolve()
-			},
-			error: (err) => {
-				console.log(err)
-				resolve()
-			}
 
+		svg2img(svg, { format: 'jpg', 'quality': 75 }, (error, buffer) => {
+
+			if (error) {
+				console.log(error)
+				resolve()
+			} else {
+				printer.printDirect({
+					data: buffer,
+					type: 'JPEG',
+					success: (id) => {
+						console.log(`Sent to printer with job id: ${id}`)
+						resolve()
+					},
+					error: (err) => {
+						console.log(err)
+						resolve({ success: false, jobId: null })
+					}
+				})
+			}
 		})
 	})
 

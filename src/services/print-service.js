@@ -1,9 +1,5 @@
-import ConvertSvgToPng from 'convert-svg-to-png'
-import ConvertSvgToJpeg from 'convert-svg-to-jpeg'
 import printer from '@thiagoelg/node-printer'
-
-const convertToPng = ConvertSvgToPng.convert
-const convertToJpeg = ConvertSvgToJpeg.convert
+import svg2img from 'svg2img'
 
 class PrintService {
 
@@ -12,20 +8,25 @@ class PrintService {
   }
   
   async print(svg) {
-   // const name = printer.getDefaultPrinterName()
-
-    const jpeg = await convertToJpeg(svg)
-
-    let p = new Promise( (resolve) => {
-      printer.printDirect({
-        data: jpeg,
-        type: 'JPEG',
-        success: (id) => {
-          resolve({success: true, jobId: id})
-        },
-        error: (err) => {
-          console.log(err)
+    let p = new Promise((resolve) => {
+      
+      svg2img(svg, { format: 'jpg', 'quality': 75 }, (error, buffer) => {
+        
+        if (error) {
+          console.log(error)
           resolve({ success: false, jobId: null })
+        } else {
+          printer.printDirect({
+            data: buffer,
+            type: 'JPEG',
+            success: (id) => {
+              resolve({ success: true, jobId: id })
+            },
+            error: (err) => {
+              console.log(err)
+              resolve({ success: false, jobId: null })
+            }
+          })
         }
       })
     })
