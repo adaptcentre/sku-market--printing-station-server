@@ -1,8 +1,8 @@
-import ConvertSvgToPng from 'convert-svg-to-png'
 import ConvertSvgToJpeg from 'convert-svg-to-jpeg'
 import printer from '@thiagoelg/node-printer'
 
-const convertToPng = ConvertSvgToPng.convert
+import fs from 'fs'
+
 const convertToJpeg = ConvertSvgToJpeg.convert
 
 class PrintService {
@@ -15,6 +15,8 @@ class PrintService {
    // const name = printer.getDefaultPrinterName()
 
     const jpeg = await convertToJpeg(svg)
+    
+    //fs.writeFileSync('test.jpeg', jpeg)
 
     let p = new Promise( (resolve) => {
       printer.printDirect({
