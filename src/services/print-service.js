@@ -14,7 +14,7 @@ class PrintService {
   async print(svg) {
    // const name = printer.getDefaultPrinterName()
 
-    const jpeg = await convertToJpeg(svg)
+    const jpeg = await convertToJpeg(svg, { puppeteer:{ timeout: 0 } })
     
     //fs.writeFileSync('test.jpeg', jpeg)
     //fs.writeFileSync('test.jpeg', jpeg)
