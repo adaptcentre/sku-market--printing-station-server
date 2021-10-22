@@ -1,5 +1,6 @@
 import printer from '@thiagoelg/node-printer'
-import svg2img from 'svg2img'
+import svgToImg from 'svg-to-img'
+import fs from 'fs'
 
 class PrintService {
 
@@ -8,27 +9,25 @@ class PrintService {
   }
   
   async print(svg) {
-    let p = new Promise((resolve) => {
-      
-      svg2img(svg, { format: 'jpg', 'quality': 75 }, (error, buffer) => {
-        
-        if (error) {
-          console.log(error)
-          resolve({ success: false, jobId: null })
-        } else {
-          printer.printDirect({
-            data: buffer,
-            type: 'JPEG',
-            success: (id) => {
-              resolve({ success: true, jobId: id })
-            },
-            error: (err) => {
-              console.log(err)
-              resolve({ success: false, jobId: null })
-            }
-          })
-        }
-      })
+    let p = new Promise(async (resolve) => {
+
+      let buffer = await svgToImg.from(svg).toJpeg()
+
+      if(buffer) {
+        printer.printDirect({
+          data: buffer,
+          type: 'JPEG',
+          success: (id) => {
+            resolve({ success: true, jobId: id })
+          },
+          error: (err) => {
+            console.log(err)
+            resolve({ success: false, jobId: null })
+          }
+        })
+      } else {
+        resolve({ success: false, jobId: null })
+      }
     })
 
     return p

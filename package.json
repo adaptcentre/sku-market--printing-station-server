@@ -19,6 +19,6 @@
     "koa-body": "^4.2.0",
     "koa-logger": "^3.2.1",
     "node-fetch": "^2.6.1",
-    "svg2img": "^0.9.4"
+    "svg-to-img": "^2.0.9"
   }
 }
